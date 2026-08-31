@@ -78,6 +78,7 @@
             transition: background-color 0.3s, border-color 0.3s;
         }
 
+        /* Formulario */
         #calcForm {
             display: grid;
             grid-template-columns: 1fr;
@@ -91,8 +92,6 @@
             }
         }
 
-        .form-group { margin-bottom: 0; }
-
         label {
             display: block;
             font-weight: 600;
@@ -101,6 +100,7 @@
             font-size: 0.85rem;
         }
 
+        /* Estilos de inputs numéricos mejorados */
         input[type="number"],
         input[type="text"],
         select {
@@ -115,20 +115,20 @@
             height: 32px;
         }
 
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--secondary);
-            box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.2);
-        }
-
-        /* Ocultar flechas de incremento/decremento en inputs numéricos */
-        input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
+        /* Ocultar spinners nativos de inputs numéricos para mayor limpieza */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
         input[type="number"] {
-            -moz-appearance: textfield; /* Para Firefox */
+            -moz-appearance: textfield;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.2);
         }
 
         input.is-invalid {
@@ -143,6 +143,7 @@
             display: none;
         }
 
+        /* Botones */
         .btn-group {
             display: flex;
             flex-direction: column;
@@ -150,7 +151,10 @@
             margin-top: 1.5rem;
         }
 
-        .btn-row { display: flex; gap: 0.5rem; }
+        .btn-row {
+            display: flex;
+            gap: 0.5rem;
+        }
 
         button {
             padding: 0.7rem 1rem;
@@ -171,18 +175,39 @@
         .btn-outline { background-color: transparent; border: 1px solid var(--border); color: var(--text-main); }
         .btn-danger { background-color: var(--danger); color: white; }
 
-        .table-responsive { overflow-x: auto; margin-top: 1.5rem; }
-        .results-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem; }
+        /* Resultados y Tabla */
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 1.5rem;
+        }
+
+        .results-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
 
         table {
             width: 100%;
             border-collapse: collapse;
             text-align: right;
-            font-size: 1rem; /* Aumentado ligeramente para mejor legibilidad */
+            font-size: 0.95rem;
         }
 
-        /* Reducido el padding para que la tabla sea más compacta */
-        th, td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); }
+        th, td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Ajuste de espaciado para pantallas grandes (PC) */
+        @media (min-width: 1024px) {
+            th, td {
+                padding: 0.5rem;
+                font-size: 1rem;
+            }
+        }
+
         th {
             background-color: var(--th-bg);
             color: var(--primary);
@@ -190,37 +215,55 @@
             white-space: nowrap;
             transition: background-color 0.3s, color 0.3s;
         }
+        
         th:first-child, td:first-child { text-align: center; }
         tbody tr:hover { background-color: var(--table-hover); }
-        
         .val-positive { color: var(--success); font-weight: 600; }
         .val-negative { color: var(--danger); font-weight: 600; }
 
+        /* Componentes extra */
         .theme-toggle {
-            position: fixed; top: 1rem; right: 1rem;
-            background: var(--surface); border: 1px solid var(--border);
-            color: var(--text-main); padding: 0.5rem; border-radius: 50%;
-            cursor: pointer; width: 40px; height: 40px;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: var(--shadow); z-index: 1000;
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+            z-index: 1000;
             transition: background-color 0.3s, color 0.3s, transform 0.2s;
         }
+
         .theme-toggle:hover { transform: scale(1.1); }
 
         .saved-list { margin-top: 1.5rem; list-style: none; }
         .saved-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0.5rem; border-bottom: 1px solid var(--border); font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
         }
         .saved-item button { padding: 0.2rem 0.5rem; font-size: 0.8rem; flex: none; }
 
+        /* Print Styles */
         @media print {
             body { background: white; padding: 0; }
             .container { grid-template-columns: 1fr; display: block; }
-            .input-section, .btn-group, .saved-configs-section, .theme-toggle { display: none !important; }
+            .input-section, .btn-group, .chart-container, .saved-configs-section, .theme-toggle, .results-actions { display: none !important; }
             .card { border: none; box-shadow: none; padding: 0; }
             table { border: 1px solid #000; }
             th, td { border: 1px solid #ddd; padding: 4px; font-size: 10pt; }
+            header { display: none; }
         }
     </style>
 </head>
@@ -234,7 +277,7 @@
                 <form id="calcForm" novalidate>
                     <div class="form-group">
                         <label for="capital">Capital Inicial</label>
-                        <input type="number" id="capital" required min="1" max="999999999" step="any" value="1000000" placeholder="Ej: 1000000">
+                        <input type="number" id="capital" required min="1" max="999999999" step="any" placeholder="Ej: 1000000">
                         <div class="error-msg" id="err-capital">Ingrese un capital válido mayor a 0.</div>
                     </div>
 
@@ -244,7 +287,7 @@
                             <option value="4095">Nivel 12 - 4095</option>
                             <option value="2047">Nivel 11 - 2047</option>
                             <option value="1023">Nivel 10 - 1023</option>
-                            <option value="511" selected>Nivel 9 - 511</option>
+                            <option value="511">Nivel 9 - 511</option>
                             <option value="255">Nivel 8 - 255</option>
                             <option value="127">Nivel 7 - 127</option>
                             <option value="63">Nivel 6 - 63</option>
@@ -259,13 +302,13 @@
 
                     <div class="form-group">
                         <label for="numeros">Números</label>
-                        <input type="number" id="numeros" required min="1" max="1000" step="1" value="14" placeholder="Ej: 14">
+                        <input type="number" id="numeros" required min="1" max="1000" step="1" placeholder="Ej: 14">
                         <div class="error-msg" id="err-numeros">Ingrese un número entero positivo.</div>
                     </div>
 
                     <div class="form-group">
                         <label for="ficha">Ficha</label>
-                        <input type="number" id="ficha" required min="0.01" step="any" list="fichas-list" value="50" placeholder="Ej: 50">
+                        <input type="number" id="ficha" required min="0.01" step="any" list="fichas-list" placeholder="Ej: 50">
                         <datalist id="fichas-list">
                             <option value="10"></option>
                             <option value="50"></option>
@@ -290,12 +333,12 @@
                                 <th title="Valor base a apostar/invertir">Valor (B)</th>
                                 <th title="Carga total del periodo (Valor * Números)">Carga (C)</th>
                                 <th title="Inversión acumulada hasta este periodo">Inv (D)</th>
-                                <th title="Pago potencial si se acierta">Pago (E)</th>
+                                <th title="Pago potencial si se acierta (Valor * Multiplicador)">Pago (E)</th>
                                 <th title="Ganancia neta (Pago - Inv)">Ganancia (F)</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Generado por JS -->
+                            <!-- Generado por JS vía DocumentFragment -->
                         </tbody>
                     </table>
                 </div>
@@ -306,6 +349,7 @@
                 </div>
             </div>
 
+            <!-- Botones y Configuraciones Guardadas -->
             <div class="card saved-configs-section" style="margin-top: 1.5rem;">
                 <div class="btn-group" style="margin-top: 0; flex-direction: row; flex-wrap: wrap;">
                     <button type="button" class="btn-primary" id="btnCalcular" style="flex: 2; min-width: 200px;">Calcular Proyección</button>
@@ -326,14 +370,18 @@
     </div>
 
     <script>
-        // --- CONSTANTES Y CONFIGURACIÓN ---
-        // Extracción de "Magic Numbers" para mejorar mantenibilidad
-        const PAYOUT_MULTIPLIER = 36; // Multiplicador por defecto para pago (ej: Pleno en Ruleta)
-        const MAX_SAFE_ITERATIONS = 25; // Límite máximo duro para evitar bucles infinitos
-        const THEME_KEY = 'calc_fin_theme';
+        // --- CONSTANTES DE NEGOCIO ---
+        const PAYOUT_MULTIPLIER = 36;
+        const MAX_SAFE_ITERATIONS = 25;
         const STORAGE_KEY = 'calc_fin_configs';
+        const AUTOSAVE_KEY = 'calc_fin_autosave';
+        const THEME_KEY = 'calc_fin_theme';
 
-        // Elementos DOM
+        // --- OPTIMIZACIÓN DE MEMORIA: Instanciación única del formateador ---
+        const numberFormatter = new Intl.NumberFormat('es-ES', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+        const formatNum = (num) => numberFormatter.format(num);
+
+        // --- ELEMENTOS DOM ---
         const form = document.getElementById('calcForm');
         const inputs = {
             capital: document.getElementById('capital'),
@@ -350,17 +398,10 @@
         const savedList = document.getElementById('savedList');
         const themeToggle = document.getElementById('themeToggle');
 
-        // --- OPTIMIZACIÓN: Instanciación global del formateador ---
-        // Evita crear un nuevo objeto Intl por cada celda de la tabla en el bucle
-        const numberFormatter = new Intl.NumberFormat('es-ES', { 
-            minimumFractionDigits: 0, 
-            maximumFractionDigits: 2 
-        });
-        const formatNum = (num) => numberFormatter.format(num);
-
+        // Estado global de resultados
         let currentResults = [];
 
-        // --- TEMA CLARO/OSCURO ---
+        // --- LÓGICA DE TEMAS ---
         function setTheme(theme) {
             document.documentElement.setAttribute('data-theme', theme);
             localStorage.setItem(THEME_KEY, theme);
@@ -376,29 +417,45 @@
                 setTheme(prefersDark ? 'dark' : 'light');
             }
         }
+
         themeToggle.addEventListener('click', () => {
             const currentTheme = document.documentElement.getAttribute('data-theme');
             setTheme(currentTheme === 'dark' ? 'light' : 'dark');
         });
-        initTheme();
+
+        // --- LÓGICA DE AUTOGUARDADO (ÚLTIMA SESIÓN) ---
+        function guardarSesionActual() {
+            const estadoActual = {
+                capital: inputs.capital.value,
+                porcion: inputs.porcion.value,
+                numeros: inputs.numeros.value,
+                ficha: inputs.ficha.value
+            };
+            localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(estadoActual));
+        }
+
+        function restaurarSesionAnterior() {
+            const estadoGuardado = localStorage.getItem(AUTOSAVE_KEY);
+            if (estadoGuardado) {
+                try {
+                    const estado = JSON.parse(estadoGuardado);
+                    inputs.capital.value = estado.capital || '1000000';
+                    inputs.porcion.value = estado.porcion || '511';
+                    inputs.numeros.value = estado.numeros || '14';
+                    inputs.ficha.value = estado.ficha || '50';
+                } catch (e) {
+                    console.error("Error al leer el autoguardado", e);
+                }
+            } else {
+                // Valores por defecto si es la primera vez
+                inputs.capital.value = '1000000';
+                inputs.porcion.value = '511';
+                inputs.numeros.value = '14';
+                inputs.ficha.value = '50';
+            }
+        }
 
         // --- VALIDACIÓN DE FORMULARIO ---
-        Object.values(inputs).forEach(input => {
-            input.addEventListener('blur', () => validateInput(input));
-            input.addEventListener('input', () => {
-                input.classList.remove('is-invalid');
-                document.getElementById(`err-${input.id}`).style.display = 'none';
-                
-                let allValid = true;
-                Object.values(inputs).forEach(inp => {
-                    if (!validateInput(inp, false)) allValid = false;
-                });
-                
-                btnCalcular.disabled = !allValid;
-                if(allValid) renderizarYCalcular();
-            });
-        });
-
         function validateInput(input, showError = true) {
             let isValid = true;
             const val = parseFloat(input.value);
@@ -427,83 +484,77 @@
                 if (input.value === '' || input.classList.contains('is-invalid')) allValid = false;
             });
             btnCalcular.disabled = !allValid;
-            if(allValid) renderizarYCalcular();
+            return allValid;
         }
 
-        // --- MODELO: LÓGICA DE NEGOCIO PURA ---
-        /**
-         * Calcula la proyección financiera independientemente de la interfaz DOM.
-         * Facilita el testing unitario y el mantenimiento.
-         */
+        // --- LÓGICA DE NEGOCIO (DESACOPLADA) ---
         function generarProgresion(capital, porcion, numeros, ficha) {
             const resultados = [];
             const baseCalculo = capital / porcion;
             const h1 = baseCalculo / numeros;
-
             const maxEntTeorico = Math.floor(Math.log2(porcion + 1)); 
-            const maxIteracionesSeguras = maxEntTeorico > 0 ? Math.max(maxEntTeorico, 15) : 15;
-
+            const maxIteraciones = maxEntTeorico > 0 ? Math.max(maxEntTeorico, 15) : 15;
             let invAcumulada = 0;
 
             for (let n = 1; n <= MAX_SAFE_ITERATIONS; n++) {
                 let hn = h1 * Math.pow(2, n - 1);
                 let i_n = Math.floor(hn / ficha);
-                
                 let valor = i_n * ficha;
                 let carga = valor * numeros;
                 invAcumulada += carga;
                 let pago = valor * PAYOUT_MULTIPLIER;
                 let ganancia = pago - invAcumulada;
 
-                // Prevención de bucles extremos en base a la inversión total acumulada vs capital
-                if (n > maxIteracionesSeguras && invAcumulada > capital) break;
+                if (n > maxIteraciones && invAcumulada > capital) break;
 
-                resultados.push({
-                    ent: n,
-                    valor: valor,
-                    carga: carga,
-                    inv: invAcumulada,
-                    pago: pago,
-                    ganancia: ganancia
-                });
+                resultados.push({ ent: n, valor, carga, inv: invAcumulada, pago, ganancia });
             }
-
             return resultados;
         }
 
-        // --- CONTROLADOR Y VISTA ---
-        btnCalcular.addEventListener('click', (e) => {
-            e.preventDefault();
-            let formValid = true;
-            Object.values(inputs).forEach(input => {
-                if (!validateInput(input)) formValid = false;
+        // --- MANEJO DE EVENTOS ---
+        Object.values(inputs).forEach(input => {
+            input.addEventListener('blur', () => validateInput(input));
+            input.addEventListener('input', () => {
+                input.classList.remove('is-invalid');
+                document.getElementById(`err-${input.id}`).style.display = 'none';
+                
+                const isValid = checkFormValidity();
+                guardarSesionActual(); 
+                
+                // Calculamos pero NO hacemos scroll automático
+                if(isValid) procesarYRenderizar(false); 
             });
-            if (formValid) renderizarYCalcular(true); // Pasamos "true" para que haga scroll solo al hacer clic
         });
 
-        // Añadimos el parámetro "shouldScroll" por defecto en false
-        function renderizarYCalcular(shouldScroll = false) {
-            const capital = parseFloat(inputs.capital.value);
-            const porcion = parseFloat(inputs.porcion.value);
-            const numeros = parseFloat(inputs.numeros.value);
-            const ficha = parseFloat(inputs.ficha.value);
+        btnCalcular.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (checkFormValidity()) {
+                procesarYRenderizar(true); // SÍ hacemos scroll al hacer click
+            }
+        });
 
-            // Invocación a función pura separada
-            currentResults = generarProgresion(capital, porcion, numeros, ficha);
-            actualizarDOM(shouldScroll);
+        function procesarYRenderizar(shouldScroll) {
+            const cap = parseFloat(inputs.capital.value);
+            const por = parseFloat(inputs.porcion.value);
+            const num = parseFloat(inputs.numeros.value);
+            const fic = parseFloat(inputs.ficha.value);
+
+            currentResults = generarProgresion(cap, por, num, fic);
+            renderizarTabla(shouldScroll);
         }
 
-        function actualizarDOM(shouldScroll = false) {
-            // OPTIMIZACIÓN: Uso de DocumentFragment para evitar reflows sucesivos
+        // --- RENDERIZADO OPTIMIZADO (DOM) ---
+        function renderizarTabla(shouldScroll) {
             tbody.innerHTML = '';
+            
+            // Uso de DocumentFragment para evitar repaints continuos
             const fragment = document.createDocumentFragment();
-
+            
             currentResults.forEach(row => {
                 const tr = document.createElement('tr');
                 const gananciaClass = row.ganancia >= 0 ? 'val-positive' : 'val-negative';
 
-                // Se mantiene innerHTML por conveniencia, pero ahora sobre un nodo no renderizado
-                // y con valores estrictamente numéricos controlados, mitigando riesgos de XSS.
                 tr.innerHTML = `
                     <td>${row.ent}</td>
                     <td>${formatNum(row.valor)}</td>
@@ -515,26 +566,21 @@
                 fragment.appendChild(tr);
             });
 
-            // Única mutación al DOM visible
             tbody.appendChild(fragment);
-
             resultsCard.style.display = 'block';
             
-            // Condicionamos el salto de pantalla
             if (shouldScroll) {
                 resultsCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         }
 
-        // --- EXPORTACIÓN CSV ---
+        // --- EXPORTACIÓN CSV CORREGIDA (EXCEL ESPAÑA/LATAM) ---
         btnExportCSV.addEventListener('click', () => {
             if (currentResults.length === 0) return;
 
-            // CORRECCIÓN: Separador de columnas a ";" para correcta interpretación en Excel ES/LatAm
             let csvContent = "ENT;Valor;Carga;Inv;Pago;Ganancia\n";
             
             currentResults.forEach(r => {
-                // CORRECCIÓN: Formatear decimales con coma en lugar de punto
                 let row = [
                     r.ent,
                     r.valor.toFixed(2).replace('.', ','),
@@ -557,7 +603,7 @@
             document.body.removeChild(link);
         });
 
-        // --- BOTONES AUXILIARES ---
+        // --- LIMPIAR Y GESTIÓN DE LOCALSTORAGE ---
         btnLimpiar.addEventListener('click', () => {
             form.reset();
             Object.values(inputs).forEach(input => {
@@ -567,9 +613,9 @@
             resultsCard.style.display = 'none';
             currentResults = [];
             btnCalcular.disabled = false;
+            guardarSesionActual();
         });
 
-        // --- LOCAL STORAGE ---
         function getConfigs() {
             const data = localStorage.getItem(STORAGE_KEY);
             return data ? JSON.parse(data) : [];
@@ -581,10 +627,8 @@
         }
 
         btnGuardar.addEventListener('click', () => {
-            if (Object.values(inputs).some(input => input.value === '')) {
-                // Fallback seguro nativo si los inputs no están llenos. (No se removió totalmente porque es una validación extra)
-                // Se prefiere un mensaje in-DOM, pero mantendremos la alerta en este flujo específico a menos que se cree un toast custom.
-                alert('Por favor llene todos los campos antes de guardar.');
+            if (!checkFormValidity()) {
+                alert('Por favor llene todos los campos con valores válidos antes de guardar.');
                 return;
             }
             
@@ -615,6 +659,8 @@
                 inputs.ficha.value = config.ficha;
                 
                 checkFormValidity();
+                guardarSesionActual();
+                procesarYRenderizar(true);
             }
         }
 
@@ -635,7 +681,6 @@
                 return;
             }
 
-            // Uso de la API DOM sin innerHTML para iteración de strings (más seguro)
             configs.forEach(config => {
                 const li = document.createElement('li');
                 li.className = 'saved-item';
@@ -658,9 +703,15 @@
             });
         }
 
-        // --- ARRANQUE ---
+        // --- INICIALIZACIÓN DE LA APLICACIÓN ---
+        initTheme();
         renderSavedList();
-        renderizarYCalcular();
+        restaurarSesionAnterior();
+        
+        // Ejecución inicial silenciosa (sin forzar el scroll al abrir la app)
+        if (checkFormValidity()) {
+            procesarYRenderizar(false);
+        }
     </script>
 </body>
 </html>
