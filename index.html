@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Progresión Financiera</title>
+    <title>Calculadora de Progresión</title>
     <style>
         :root {
             --primary: #1a365d;
@@ -20,6 +20,10 @@
             --radius: 8px;
             --table-hover: #f7fafc;
             --th-bg: #edf2f7;
+            
+            /* Variables de resaltado (Modo Claro) */
+            --highlight-bg: #feebc8; /* Naranja/Amarillo claro */
+            --highlight-border: #dd6b20; /* Naranja oscuro para el borde */
         }
 
         /* Variables para el modo oscuro */
@@ -34,6 +38,10 @@
             --table-hover: #4a5568;
             --th-bg: #1a202c;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+            
+            /* Variables de resaltado (Modo Oscuro) */
+            --highlight-bg: rgba(237, 137, 54, 0.2); /* Fondo naranja translúcido */
+            --highlight-border: #fbd38d; /* Naranja/Amarillo brillante para el borde */
         }
 
         * {
@@ -115,7 +123,6 @@
             height: 32px;
         }
 
-        /* Ocultar spinners nativos de inputs numéricos para mayor limpieza */
         input[type="number"]::-webkit-outer-spin-button,
         input[type="number"]::-webkit-inner-spin-button {
             -webkit-appearance: none;
@@ -200,7 +207,6 @@
             border-bottom: 1px solid var(--border);
         }
 
-        /* Ajuste de espaciado para pantallas grandes (PC) */
         @media (min-width: 1024px) {
             th, td {
                 padding: 0.5rem;
@@ -220,6 +226,24 @@
         tbody tr:hover { background-color: var(--table-hover); }
         .val-positive { color: var(--success); font-weight: 600; }
         .val-negative { color: var(--danger); font-weight: 600; }
+
+        /* Estilos específicos para la fila y celda más aproximada al Capital */
+        tr.row-highlight {
+            background-color: var(--highlight-bg) !important;
+        }
+
+        tr.row-highlight:hover {
+            background-color: var(--highlight-bg) !important;
+            filter: brightness(0.95);
+        }
+
+        td.cell-highlight {
+            font-weight: 900;
+            /* Usamos box-shadow interno (inset) para crear un borde grueso
+               sin romper el alineamiento (border-collapse) de la tabla */
+            box-shadow: inset 0 0 0 2px var(--highlight-border) !important;
+            position: relative;
+        }
 
         /* Componentes extra */
         .theme-toggle {
@@ -264,6 +288,10 @@
             table { border: 1px solid #000; }
             th, td { border: 1px solid #ddd; padding: 4px; font-size: 10pt; }
             header { display: none; }
+            
+            /* Asegurar que el resaltado se vea al imprimir */
+            tr.row-highlight td { background-color: #feebc8 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            td.cell-highlight { border: 2px solid #dd6b20 !important; font-weight: bold !important; }
         }
     </style>
 </head>
@@ -548,18 +576,40 @@
         function renderizarTabla(shouldScroll) {
             tbody.innerHTML = '';
             
+            const capitalInicial = parseFloat(inputs.capital.value);
+            
+            // Buscar la iteración cuya Inversión Acumulada (Inv) esté más próxima al Capital Inicial
+            let indexMasProximo = -1;
+            let diferenciaMinima = Infinity;
+
+            if (currentResults.length > 0 && !isNaN(capitalInicial)) {
+                currentResults.forEach((row, index) => {
+                    const diff = Math.abs(row.inv - capitalInicial);
+                    if (diff < diferenciaMinima) {
+                        diferenciaMinima = diff;
+                        indexMasProximo = index;
+                    }
+                });
+            }
+            
             // Uso de DocumentFragment para evitar repaints continuos
             const fragment = document.createDocumentFragment();
             
-            currentResults.forEach(row => {
+            currentResults.forEach((row, index) => {
                 const tr = document.createElement('tr');
                 const gananciaClass = row.ganancia >= 0 ? 'val-positive' : 'val-negative';
+                
+                // Si es la fila más cercana al capital, añadimos la clase de resaltado
+                const esFilaResaltada = index === indexMasProximo;
+                if (esFilaResaltada) {
+                    tr.classList.add('row-highlight');
+                }
 
                 tr.innerHTML = `
                     <td>${row.ent}</td>
                     <td>${formatNum(row.valor)}</td>
                     <td>${formatNum(row.carga)}</td>
-                    <td>${formatNum(row.inv)}</td>
+                    <td class="${esFilaResaltada ? 'cell-highlight' : ''}">${formatNum(row.inv)}</td>
                     <td>${formatNum(row.pago)}</td>
                     <td class="${gananciaClass}">${formatNum(row.ganancia)}</td>
                 `;
